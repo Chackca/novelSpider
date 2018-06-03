@@ -6,7 +6,8 @@ package novel.spider;
 public enum NovelSiteEnum {
     DingDianXiaoShuo(1,"x23us.com"),
     BiQuGe(2,"biquge.com.tw"),
-    KanShuZhong(3,"kanshuzhong.com");
+    KanShuZhong(3,"kanshuzhong.com"),
+    BiXiaWenXue(4,"bxwx9.org");
 
     private int id;
     private String url;
@@ -36,6 +37,7 @@ public enum NovelSiteEnum {
             case 1:return DingDianXiaoShuo;
             case 2:return BiQuGe;
             case 3:return KanShuZhong;
+            case 4:return BiXiaWenXue;
             default:throw new RuntimeException("id="+id+"是不被支持的小说网站");
         }
     }

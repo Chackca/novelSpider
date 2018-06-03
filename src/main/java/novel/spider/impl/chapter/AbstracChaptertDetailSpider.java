@@ -1,7 +1,8 @@
-package novel.spider.impl;
+package novel.spider.impl.chapter;
 
 import novel.spider.NovelSiteEnum;
 import novel.spider.entitys.ChapterDetail;
+import novel.spider.impl.AbstractSpider;
 import novel.spider.interfaces.IChapterDetailSpider;
 import novel.spider.util.NovelSpiderUtil;
 
@@ -19,10 +20,10 @@ public abstract class AbstracChaptertDetailSpider extends AbstractSpider impleme
         try {
             String result = super.crawl(url);
             //jsoup不支持解析&nbsp这种字符
-            result = result.replace("&nbsp;","  ")
-                    .replace("<br />","\n")
-                    .replace("<br/>","\n");
-            Document doc = Jsoup.parse(result);
+            result = result.replace("&nbsp;"," ")
+                    .replace("<br />","${line}")
+                    .replace("<br/>","${line}");
+            Document doc = Jsoup.parse(result);//jsoup解析会把换行\n去掉
             doc.setBaseUri(url);
             Map<String, String> contexts = NovelSpiderUtil.getContext(NovelSiteEnum.getEnumByUrl(url));
 
@@ -44,8 +45,8 @@ public abstract class AbstracChaptertDetailSpider extends AbstractSpider impleme
             if (docSelectCheck.size() == 0) {
                 System.out.println("您配置的内容的CSS查询器可能无法正确匹配到内容，请检查后继续");
                 return null;
-            }
-            detail.setContent(docSelectCheck.first().text());
+            }//由于在jsoup无法实现换行，所以在最后设置content的时候来换取我们设置的内容实现换行
+            detail.setContent(docSelectCheck.first().text().replace("${line}","\n"));
 
             //拿前一章的内容
             String prevSelector = contexts.get("chapter-detail-prev-selector");
@@ -71,6 +72,7 @@ public abstract class AbstracChaptertDetailSpider extends AbstractSpider impleme
 
             return detail;
         } catch (Exception e) {
+            System.out.println("AbstracChaptertDetailSpider抛出异常了");
             throw new RuntimeException(e);
         }
     }

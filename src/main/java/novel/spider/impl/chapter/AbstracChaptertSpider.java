@@ -1,7 +1,8 @@
-package novel.spider.impl;
+package novel.spider.impl.chapter;
 
 import novel.spider.NovelSiteEnum;
 import novel.spider.entitys.Chapter;
+import novel.spider.impl.AbstractSpider;
 import novel.spider.interfaces.IChapterSpider;
 import novel.spider.util.NovelSpiderUtil;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -24,10 +25,12 @@ public abstract class AbstracChaptertSpider extends AbstractSpider implements IC
             String result = super.crawl(url);
             Document doc = Jsoup.parse(result);
             doc.setBaseUri(url);//解决不同网页绝对路径与相对路径的问题
+            Elements elementForBookName = doc.select(NovelSpiderUtil.getContext(NovelSiteEnum.getEnumByUrl(url)).get("book-name"));
             Elements elements = doc.select(NovelSpiderUtil.getContext(NovelSiteEnum.getEnumByUrl(url)).get("chapter-list-selector"));
             List<Chapter> chapters = new ArrayList<>();
             for (Element element : elements){
                 Chapter chapter = new Chapter();
+                chapter.setBookName(elementForBookName.text());
                 chapter.setTitle(element.text());
                 chapter.setUrl(element.absUrl("href"));//使用absUrl
                 chapters.add(chapter);

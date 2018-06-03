@@ -3,12 +3,15 @@ package novel.spider.junit;
 import novel.spider.NovelSiteEnum;
 import novel.spider.configuration.Configuration;
 import novel.spider.entitys.Chapter;
-import novel.spider.impl.DefaultChapterDetailSpider;
-import novel.spider.impl.DefaultChapterSpider;
-import novel.spider.impl.NovelDownload;
+import novel.spider.entitys.Novel;
+import novel.spider.impl.chapter.DefaultChapterDetailSpider;
+import novel.spider.impl.chapter.DefaultChapterSpider;
+import novel.spider.impl.download.NovelDownload;
 import novel.spider.interfaces.IChapterDetailSpider;
 import novel.spider.interfaces.IChapterSpider;
 import novel.spider.interfaces.INovelDownload;
+import novel.spider.interfaces.INovelSpider;
+import novel.spider.util.NovelSpiderFactory;
 import novel.spider.util.NovelSpiderUtil;
 import org.junit.Test;
 
@@ -22,7 +25,8 @@ public class TestCase {
         //http://www.kanshuzhong.com/book/103251/   看书中
         //https://www.x23us.com/html/68/68505/      顶点小说
         //http://www.biquge.com.tw/16_16209/         笔趣阁
-        List<Chapter> chapters = spider.getChapter("https://www.x23us.com/html/68/68505/");
+        //https://www.bxwx9.org/b/176/176884/index.html  笔下文学
+        List<Chapter> chapters = spider.getChapter("https://www.bxwx9.org/b/176/176884/index.html");
         for (Chapter chapter : chapters) {
             System.out.println(chapter);
         }
@@ -37,6 +41,9 @@ public class TestCase {
         System.out.println(NovelSpiderUtil.getContext(NovelSiteEnum.getEnumByUrl("http://www.kanshuzhong.com/book/103251/")));
         //笔趣阁
         System.out.println(NovelSpiderUtil.getContext(NovelSiteEnum.getEnumByUrl("http://www.biquge.com.tw/16_16209/")));
+        //笔下文学
+        System.out.println(NovelSpiderUtil.getContext(NovelSiteEnum.getEnumByUrl("https://www.bxwx9.org/b/176/176884/index.html")));
+
     }
 
     @Test
@@ -47,14 +54,38 @@ public class TestCase {
         //顶点小说
         //System.out.println(spider.getChapterDetail("https://www.x23us.com/html/68/68792/31124471.html"));
         //看书中
-        System.out.println(spider.getChapterDetail("http://www.kanshuzhong.com/book/118300/26105362.html"));
+        //System.out.println(spider.getChapterDetail("http://www.kanshuzhong.com/book/118300/26105362.html"));
+        //笔下文学
+        System.out.println(spider.getChapterDetail("https://www.bxwx9.org/b/176/176884/29540104.html"));
     }
 
 
     @Test
     public void testDownload() {
         INovelDownload download = new NovelDownload();
-        Configuration configuration = new Configuration();
-        download.download("",null);
+        Configuration config = new Configuration();
+        config.setPath("G:\\example\\tempDir\\novelSpider");
+        config.setSize(50);
+        config.setTryTimes(4);
+        //download.download("http://www.kanshuzhong.com/book/120155/",config);
+        //https://www.bxwx9.org/b/176/176884/index.html  笔下文学
+        System.out.println("下载好了，文件保存在："+download.download("https://www.bxwx9.org/b/176/176884/index.html",config));
+    }
+
+    @Test
+    public void testMultiFileMerge(){
+        NovelSpiderUtil.multiFileMerge("G:\\example\\tempDir\\novelSpider",null,false);
+    }
+
+    @Test
+    public void testGetNovel(){
+        INovelSpider novelSpider = NovelSpiderFactory.getNovelSpider("http://www.kanshuzhong.com/map/A/1/");
+        List<Novel> novelList = novelSpider.getNovel("http://www.kanshuzhong.com/map/A/1/");
+
+        //INovelSpider novelSpider = NovelSpiderFactory.getNovelSpider("https://www.bxwx9.org/binitialA/0/1.htm");
+        //List<Novel> novelList = novelSpider.getNovel("https://www.bxwx9.org/binitialA/0/1.htm");
+        for (Novel novel : novelList){
+            System.out.println(novel);
+        }
     }
 }

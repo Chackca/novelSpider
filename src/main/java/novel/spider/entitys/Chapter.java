@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class Chapter implements Serializable{
 
+
+
+    //书名
+    private String bookName;
     //标题
     private String title;
     //链接
@@ -12,7 +16,8 @@ public class Chapter implements Serializable{
     @Override
     public String toString() {
         return "Chapter{" +
-                "title='" + title + '\'' +
+                "bookName='" + bookName + '\'' +
+                ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 '}';
     }
@@ -51,6 +56,12 @@ public class Chapter implements Serializable{
         result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
+    public String getBookName() {
+        return bookName;
+    }
 
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
 
 }
