@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="novelStorage">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../novelStorage" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../novelStorage/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../novelStorage/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

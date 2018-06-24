@@ -34,7 +34,7 @@ public abstract class AbstracChaptertDetailSpider extends AbstractSpider impleme
             ChapterDetail detail = new ChapterDetail();
             Elements docSelectCheck = doc.select(splits[0]);
             if (docSelectCheck.size() == 0) {
-                System.out.println("您配置的章节的CSS查询器可能无法正确匹配到内容，请检查后继续");
+                System.err.println("您配置的章节的CSS查询器可能无法正确匹配到内容，请检查后继续");
                 return null;
             }
             detail.setTitle(docSelectCheck.get(Integer.parseInt(splits[1])).text());
@@ -43,7 +43,7 @@ public abstract class AbstracChaptertDetailSpider extends AbstractSpider impleme
             String contentSelector = contexts.get("chapter-detail-content-selector");
             docSelectCheck = doc.select(contentSelector);
             if (docSelectCheck.size() == 0) {
-                System.out.println("您配置的内容的CSS查询器可能无法正确匹配到内容，请检查后继续");
+                System.err.println("您配置的内容的CSS查询器可能无法正确匹配到内容，请检查后继续");
                 return null;
             }//由于在jsoup无法实现换行，所以在最后设置content的时候来换取我们设置的内容实现换行
             detail.setContent(docSelectCheck.first().text().replace("${line}","\n"));
@@ -54,7 +54,7 @@ public abstract class AbstracChaptertDetailSpider extends AbstractSpider impleme
             splits = parseSelector(splits);
             docSelectCheck = doc.select(splits[0]);
             if (docSelectCheck.size() == 0) {
-                System.out.println("您配置的前一章的CSS查询器可能无法正确匹配到内容，请检查后继续");
+                System.err.println("您配置的前一章的CSS查询器可能无法正确匹配到内容，请检查后继续");
                 return null;
             }
             detail.setPrev(docSelectCheck.get(Integer.parseInt(splits[1])).absUrl("href"));
@@ -65,14 +65,14 @@ public abstract class AbstracChaptertDetailSpider extends AbstractSpider impleme
             splits = parseSelector(splits);
             docSelectCheck = doc.select(splits[0]);
             if (docSelectCheck.size() == 0) {
-                System.out.println("您配置的后一章的CSS查询器可能无法正确匹配到内容，请检查后继续");
+                System.err.println("您配置的后一章的CSS查询器可能无法正确匹配到内容，请检查后继续");
                 return null;
             }
             detail.setNext(docSelectCheck.get(Integer.parseInt(splits[1])).absUrl("href"));
 
             return detail;
         } catch (Exception e) {
-            System.out.println("AbstracChaptertDetailSpider抛出异常了");
+            System.err.println("AbstracChaptertDetailSpider抛出异常了");
             throw new RuntimeException(e);
         }
     }

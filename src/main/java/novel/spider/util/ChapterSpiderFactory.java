@@ -27,7 +27,7 @@ public final class ChapterSpiderFactory {
                 chapterSpider = new DefaultChapterSpider();
                 break;
             default:
-                System.out.println("对于获取所有章节列表，该网站可能不支持");
+                System.err.println("对于获取所有章节列表，该网站可能不支持");
         }
         return chapterSpider;
     }

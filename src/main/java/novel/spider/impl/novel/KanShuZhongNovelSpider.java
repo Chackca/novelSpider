@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,10 +20,10 @@ public class KanShuZhongNovelSpider extends AbstractNovelSpider{
     }
 
     @Override
-    public List<Novel> getNovel(String url) {
+    public List<Novel> getNovel(String url,Integer maxTryTimes) {
         List<Novel> novelList = new ArrayList<>();
         try {
-            Elements trs = super.getsTr(url);
+            Elements trs = super.getsTr(url,maxTryTimes);
             //跳过第一个tr
             for (int index=1,size = trs.size()-1;index<size;index++){
                 Element tr = trs.get(index);
@@ -30,7 +31,7 @@ public class KanShuZhongNovelSpider extends AbstractNovelSpider{
                 Novel novel = new Novel();
                 novel.setName(tds.get(1).text());
                 novel.setUrl(tds.get(1).getElementsByTag("a").first().absUrl("href"));
-                novel.setLastUpdateChapterName(tds.get(2).text());
+                novel.setLastUpdateChapter(tds.get(2).text());
                 novel.setLastUpdateChapterUrl(tds.get(2).getElementsByTag("a").first().absUrl("href"));
                 novel.setAuthor(tds.get(3).text());
                 novel.setLastUpdateTime(NovelSpiderUtil.getDate(tds.get(4).text(),"mm-dd"));
@@ -45,4 +46,5 @@ public class KanShuZhongNovelSpider extends AbstractNovelSpider{
         }
         return novelList;
     }
+
 }

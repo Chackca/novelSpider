@@ -49,3 +49,22 @@ printWriter输出到磁盘中，最后调用get方法判断该线程是否执行
 然后在里面写一个方法用来设置超时时间
 
 修改下载的文件的地址存放的目录不够清晰的问题，增加爬虫抓取小说标题，然后在写磁盘时每本小说放在指定的标题目录下
+
+###第七章
+调用逻辑：TestCase:
+    //利用工厂返回一个对应此链接的spider，此spider有getNovel（获取本页面中的所有Novel存储于一个list中），iterator（用于调用下一页的getNovel）等方法
+    INovelSpider spider = NovelSpiderFactory.getNovelSpider("http://www.kanshuzhong.com/map/A/1/");
+    //返回AbstractNovelSpider里面的NovelIterator类，其包含了下一页的所有Novel
+    Iterator<List<Novel>> iterator = spider.iterator("http://www.kanshuzhong.com/map/A/1/",5);
+    while (iterator.hasNext()){
+        //每次调用next()，都会更新AbstractNovelSpider类里面的nextPage方法，保证其内部数据是变化的
+        List<Novel> novelList = iterator.next();
+        //输出下一个的地址
+        System.out.println("URL:"+spider.next());
+    }
+###第八章
+本章功能：抓取笔下文学与看书中的按照字母分类的所有书的信息，不包括书的具体内容
+主要代码都在storage中，使用了mybatis进行数据库操作，使用generator生成了Novel实体与数据库对应的mapper.xml，并新建了NovelMapper接口
+具体的调用接口是Process接口，使用方式在TestCase中有实例
+说明：新建了AbstractNovelStorage其实现了Process接口，里面有SqlSessionFactory用于操作mybatis，并准备了一个TreeMap<String,String>用于存储当前下载的目录的首字母对应的网址
+

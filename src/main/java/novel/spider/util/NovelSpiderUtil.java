@@ -7,6 +7,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.*;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,7 +23,8 @@ public final class NovelSpiderUtil {
     private static void init(){
         SAXReader reader = new SAXReader();
         try {
-            Document doc = reader.read(new File("conf/Spider-Rule.xml"));
+            URL url = NovelSpiderUtil.class.getClassLoader().getResource("Spider-Rule.xml");
+            Document doc = reader.read(new File(url.getFile()));
             Element rootElement = doc.getRootElement();//sites节点
             List<Element> sites = rootElement.elements("site");
             for (Element site : sites){
@@ -89,7 +91,7 @@ public final class NovelSpiderUtil {
                 }
             }
         } catch (IOException e1) {
-            System.out.println("文件合并出现异常");
+            System.err.println("文件合并出现异常");
             throw new RuntimeException(e1);
         } finally {
             out.close();

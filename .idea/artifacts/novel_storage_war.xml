@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="novel.storage:war">
+    <output-path>$PROJECT_DIR$/../novelStorage/target</output-path>
+    <root id="archive" name="novel.storage-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="novel.storage:war exploded" />
+    </root>
+  </artifact>
+</component>

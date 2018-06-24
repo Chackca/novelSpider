@@ -24,7 +24,7 @@ public class AbstractSpider {
             String result = EntityUtils.toString(httpResponse.getEntity(), NovelSpiderUtil.getContext(NovelSiteEnum.getEnumByUrl(url)).get("charset"));
             return result;
         }catch (Exception e){
-            System.out.println("AbstractSpider中可能连接超时了");
+            System.err.println("AbstractSpider中可能连接超时了");
             throw new RuntimeException(e);
         }
     }

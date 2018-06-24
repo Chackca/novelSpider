@@ -7,6 +7,7 @@ import novel.spider.interfaces.INovelSpider;
 
 /**
  * 生产书籍列表的实现类
+ * 根据传入的url判断是返回哪个网站的抓取书籍字母目录的实现类
  */
 public final class NovelSpiderFactory {
     private NovelSpiderFactory(){}
